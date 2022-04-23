@@ -1,0 +1,23 @@
+@import "./mixin.scss";
+@import "./variable.scss";
+// Custom off login.scss
+body {
+    background-image: linear-gradient(to right, $color-title-form, rgb(155, 122, 14));
+}
+.main {
+    .form-login {
+        .row {
+            .form-title {
+                color: $color-title-form;
+            }
+        }
+        .form-group {
+            input {
+                padding-left: 10px;
+            }
+            #input-submit {
+                background-image: linear-gradient(to right, $color-title-form, rgb(155, 122, 14));
+            }
+        }
+    }
+}
