@@ -25,7 +25,7 @@
 
     <!-- Header -->
     <?php
-        include './header.php';
+    include './header.php';
     ?>
 
     <!-- Main -->
@@ -52,25 +52,25 @@
                             <article class="col-12">
                                 <div class="form-group">
                                     <input type="text" placeholder="Họ tên(*)" id="input-name" name="name">
-                                    <p class="message hide" ></p>
+                                    <p class="message hide"></p>
                                 </div>
                             </article>
                             <article class="col-12">
                                 <div class="form-group">
                                     <input type="text" placeholder="Số điện thoại(*)" id="input-numberphone" name="phone">
-                                    <p class="message hide" ></p>
+                                    <p class="message hide"></p>
                                 </div>
                             </article>
                             <article class="col-12">
                                 <div class="form-group">
                                     <input type="text" placeholder="Email(*)" id="input-email" name="email">
-                                    <p class="message hide" ></p>
+                                    <p class="message hide"></p>
                                 </div>
                             </article>
                             <article class="col-12">
                                 <div class="form-group">
                                     <textarea name="message" id="input-content" cols="30" rows="10" placeholder="Nội dung"></textarea>
-                                    <p class="message hide" ></p>
+                                    <p class="message hide"></p>
                                 </div>
                             </article>
                             <article class="col-12">
@@ -87,7 +87,7 @@
 
     <!-- Footer -->
     <?php
-        include './footer.php';
+    include './footer.php';
     ?>
     <!-- CDN Library Alert -->
     <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
@@ -103,18 +103,20 @@
 
     <!-- PHP -->
     <?php
-        if (isset($_POST['submit'])){
-            $a = $_POST['name'];
-            $b = $_POST['phone'];
-            $c = $_POST['email'];
-            $d = $_POST['message'];
-            include './connect.php';
-            $sql = "INSERT INTO `feedback`(`name`, `phone`, `email`, `message`) VALUES ('$a','$b','$c','$d')";
-            if (!$connect->query($sql)) {
-                echo "Error: " . $connect->error;
-            }
-            else{
-                echo "
+    if (isset($_POST['submit'])) {
+        $a = $_POST['name'];
+        $b = $_POST['phone'];
+        $c = $_POST['email'];
+        $d = $_POST['message'];
+        include './connect.php';
+        $stmt = $connect->prepare("INSERT INTO `feedback`(`name`, `phone`, `email`, `message`) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $a1, $b1, $c1, $d1);
+        $a1 = $a;
+        $b1 = $b;
+        $c1 = $c;
+        $d1 = $d;
+        $stmt->execute();
+        echo "
                 <script>
                     swal('Phản hồi thành công', 'Chúng tôi đã nhận được phản hồi từ bạn, cảm ơn bạn đã đóng góp', 'success');
                     document.addEventListener('keydown', (e) => {
@@ -124,8 +126,9 @@
                     });
                 </script>
             ";
-            }
-        }
+        $stmt->close();
+        $connect->close();
+    }
     ?>
 </body>
 
